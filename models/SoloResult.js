@@ -6,7 +6,4 @@ const SoloResultSchema = new mongoose.Schema({
   errorCount: { type: Number, required: true },   
   timeElapsed: { type: Number, required: true },
   createdAt: { type: Date, default: Date.now }
-
 });
-
-module.exports = mongoose.model('SoloResult', SoloResultSchema);

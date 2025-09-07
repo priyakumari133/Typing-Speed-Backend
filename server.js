@@ -122,7 +122,7 @@ io.on('connection', (socket) => {
       room.players.forEach(player => {
         player.typedText = '';
         player.currentIndex = 0;
-        player.errors = 0;
+  player.errorCount = 0;
         player.finished = false;
       });
       
@@ -153,7 +153,7 @@ io.on('connection', (socket) => {
       if (player) {
         player.typedText = data.typedText;
         player.currentIndex = data.currentIndex;
-        player.errors = data.errors;
+  player.errorCount = data.errorCount;
         
         // Broadcast typing progress to other players in the room
         socket.to(data.roomCode).emit('playerTypingUpdate', {
@@ -174,13 +174,13 @@ io.on('connection', (socket) => {
         const wordsTyped = player.typedText.trim().split(' ').length;
         const timeElapsed = room.duration; // Full duration
         const wpm = Math.round((wordsTyped / timeElapsed) * 60);
-        const accuracy = Math.round(((player.typedText.length - player.errors) / player.typedText.length) * 100) || 0;
+  const accuracy = Math.round(((player.typedText.length - player.errorCount) / player.typedText.length) * 100) || 0;
         
         return {
           username: player.username,
           wpm,
           accuracy,
-          errors: player.errors,
+          errorCount: player.errorCount,
           score: wpm * (accuracy / 100) // Simple scoring system
         };
       });
